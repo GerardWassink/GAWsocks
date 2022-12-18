@@ -50,7 +50,7 @@ void clearScreen();
 int main(int argc , char *argv[])
 {
     
-    char *hostname = "geronimo370.nl";
+    char *hostname = "wikipedia.org";
     char ip[100];
     struct hostent *he;
     struct in_addr **addr_list;
