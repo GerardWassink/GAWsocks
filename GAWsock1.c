@@ -30,23 +30,15 @@
  * ------------------------------------------------------------------------- */
 
 #include <stdio.h>
-#include <strings.h>
 #include <sys/socket.h>
 
-
-/* ------------------------------------------------------------------------- *
- *                                                     Function declarations
- * ------------------------------------------------------------------------- */
-void Initialize();
-char inputCharacter();
-void clearScreen();
 
 /* ------------------------------------------------------------------------- *
  *                                                              Main routine
  * ------------------------------------------------------------------------- */
 int main(int argc , char *argv[])
 {
-    Initialize();
+    printf("%s%s\n", "GAWsock1 version ", VERSION);
     
     // *** --------------------------------------------------------------------
     // *** declare and instantiate the socket
@@ -57,40 +49,14 @@ int main(int argc , char *argv[])
     // *** --------------------------------------------------------------------
     // *** check result
     // *** --------------------------------------------------------------------
-	if (socket_desc != -1)
+	if (socket_desc == -1)
 	{
-        puts("Create socket successful\n");
-	} else {
 		puts("Could not create socket\n");
+		return 1;
     }
 	
+    puts("Create socket successful\n");
 	return 0;
 }
 
-
-/* ------------------------------------------------------------------------- *
- *                                                       Input one character
- * ------------------------------------------------------------------------- */
-char inputCharacter() {    
-    char c;
-    scanf("%c", &c);
-    return c;
-}
-
-
-void Initialize() {
-    clearScreen();
-    printf("%s%s\n", "GAWsock1 version", VERSION);
-    puts("Test opening a socket, press a key\n");
-
-    inputCharacter();
-}
-
-
-/* ------------------------------------------------------------------------- *
- *                                                           Clear Screen
- * ------------------------------------------------------------------------- */
-void clearScreen() {
-    printf("%c%s%c%s%c%s", 27, "[2J", 27, "[0m", 27, "[00;00H");
-}
 

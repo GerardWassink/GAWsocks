@@ -36,20 +36,11 @@
 
 
 /* ------------------------------------------------------------------------- *
- *                                                     Function declarations
- * ------------------------------------------------------------------------- */
-void Initialize();
-char inputCharacter();
-void clearScreen();
-
-
-/* ------------------------------------------------------------------------- *
  *                                                              Main routine
  * ------------------------------------------------------------------------- */
 int main(int argc , char *argv[])
 {
-    Initialize();
-
+    printf("%s%s\n", "GAWsock2 version", VERSION);
 	
 	int socket_desc;				// declare the socket
 	struct sockaddr_in server;		//   and server structs
@@ -59,50 +50,25 @@ int main(int argc , char *argv[])
 
 	if (socket_desc == -1) {		// check result
 		puts("Could not create socket");
-	} else {
-		puts("Socket created");	// SUCCESS
+		return 1;
+	}
+	
+	puts("Socket created");			// SUCCESS
 
 									// Populate server struct
-        server.sin_addr.s_addr = inet_addr("142.250.179.142");
-        server.sin_family = AF_INET;
-        server.sin_port = htons( 80 );
+	server.sin_addr.s_addr = inet_addr("142.250.179.142");
+	server.sin_family = AF_INET;
+	server.sin_port = htons( 80 );
 
 									//Connect to remote server
-        if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0) {
-            puts("Connect error");
-            return 1;
-        } else {
-            puts("Connected");
-        }
-    }
-    
+	if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0) {
+		puts("Connect error");
+		return 1;
+	}
+	
+	puts("Socket connected");				// SUCCESSFUL CONNECT
+	
 	return 0;
 }
 
-
-/* ------------------------------------------------------------------------- *
- *                                                       Input one character
- * ------------------------------------------------------------------------- */
-char inputCharacter() {    
-    char c;
-    scanf("%c", &c);
-    return c;
-}
-
-
-void Initialize() {
-    clearScreen();
-    printf("%s%s\n", "GAWsock1 version", VERSION);
-    puts("Test opening a socket, press a key\n");
-
-    inputCharacter();
-}
-
-
-/* ------------------------------------------------------------------------- *
- *                                                           Clear Screen
- * ------------------------------------------------------------------------- */
-void clearScreen() {
-    printf("%c%s%c%s%c%s", 27, "[2J", 27, "[0m", 27, "[00;00H");
-}
 
