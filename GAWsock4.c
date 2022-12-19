@@ -30,16 +30,10 @@
  * ------------------------------------------------------------------------- */
 
 #include <stdio.h>          // printf
-#include <string.h>         // strcopy
+#include <string.h>         // strcpy
 #include <sys/socket.h>
-#include <netdb.h>          // histent
+#include <netdb.h>          // hostent
 #include <arpa/inet.h>
-
-
-/* ------------------------------------------------------------------------- *
- *                                                     Function declarations
- * ------------------------------------------------------------------------- */
-void Initialize();
 
 
 /* ------------------------------------------------------------------------- *
@@ -48,40 +42,47 @@ void Initialize();
 int main(int argc , char *argv[])
 {
     
-    char *hostname = "wikipedia.org";
+    char hostname[200];
     char ip[100];
     struct hostent *he;
     struct in_addr **addr_list;
     int i;
-	
-    Initialize();
+
+									// Tell'em who we are
+    printf("%s%s\n", "GAWsock1 version ", VERSION);
     
+	if (argc < 2)					// Check # args
+	{
+		puts("no URL given");
+		return 1;
+	}
+	
+	strcpy(hostname, argv[1]);		// Get hostname
+	
 									// Try to solve hostname
-	if ((he = gethostbyname(hostname)) == NULL) // check result
+									//   and check result
+	if ((he = gethostbyname(hostname)) == NULL)
     {
         herror("gethostbyname");
         return 1;
     }
 
-                                // Cast the h_addr_list to in_addr , 
-                                //   since h_addr_list also has the 
-                                //     ip address in long format only
+									// Cast the h_addr_list to in_addr , 
+									//   since h_addr_list also has the 
+									//     ip address in long format only
     addr_list = (struct in_addr **) he->h_addr_list;
     
     for (i=0; addr_list[i] != NULL; i++)
     {
-                                // Return 1st one
+									// Return 1st one
         strcpy(ip, inet_ntoa(*addr_list[i]) );
     }
     
+									// Give back result
     printf("%s resolved to : %s\n" , hostname , ip);
     
 	return 0;
 }
 
-
-void Initialize() {
-    printf("%s%s\n", "GAWsock1 version ", VERSION);
-}
 
 
