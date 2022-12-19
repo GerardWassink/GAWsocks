@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------------- *
- * Name   : GAWsock3
+ * Name   : GAWsock4
  * Author : Gerard Wassink
  * Date   : December 2022
  * Purpose: Resolve hostname to ip-address using TCP/IP sockets
@@ -40,8 +40,6 @@
  *                                                     Function declarations
  * ------------------------------------------------------------------------- */
 void Initialize();
-char inputCharacter();
-void clearScreen();
 
 
 /* ------------------------------------------------------------------------- *
@@ -59,56 +57,31 @@ int main(int argc , char *argv[])
     Initialize();
     
 									// Try to solve hostname
-	if ((he = gethostbyname(hostname)) != NULL) // check result
+	if ((he = gethostbyname(hostname)) == NULL) // check result
     {
-		puts("Hostname found");
-        
-                                    // Cast the h_addr_list to in_addr , 
-                                    //   since h_addr_list also has the 
-                                    //     ip address in long format only
-        addr_list = (struct in_addr **) he->h_addr_list;
-        
-        for (i=0; addr_list[i] != NULL; i++)
-        {
-                                    // Return 1st one
-            strcpy(ip, inet_ntoa(*addr_list[i]) );
-        }
-        
-        printf("%s resolved to : %s\n" , hostname , ip);
-        
-    } else {
-		puts("Could not resolve hostname");
         herror("gethostbyname");
         return 1;
     }
+
+                                // Cast the h_addr_list to in_addr , 
+                                //   since h_addr_list also has the 
+                                //     ip address in long format only
+    addr_list = (struct in_addr **) he->h_addr_list;
+    
+    for (i=0; addr_list[i] != NULL; i++)
+    {
+                                // Return 1st one
+        strcpy(ip, inet_ntoa(*addr_list[i]) );
+    }
+    
+    printf("%s resolved to : %s\n" , hostname , ip);
     
 	return 0;
 }
 
 
-/* ------------------------------------------------------------------------- *
- *                                                       Input one character
- * ------------------------------------------------------------------------- */
-char inputCharacter() {    
-    char c;
-    scanf("%c", &c);
-    return c;
-}
-
-
 void Initialize() {
-    clearScreen();
-    printf("%s%s\n", "GAWsock1 version", VERSION);
-    puts("Test opening a socket, press a key");
-
-    inputCharacter();
+    printf("%s%s\n", "GAWsock1 version ", VERSION);
 }
 
-
-/* ------------------------------------------------------------------------- *
- *                                                           Clear Screen
- * ------------------------------------------------------------------------- */
-void clearScreen() {
-    printf("%c%s%c%s%c%s", 27, "[2J", 27, "[0m", 27, "[00;00H");
-}
 
