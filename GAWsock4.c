@@ -59,8 +59,7 @@ int main(int argc , char *argv[])
 	
 	strcpy(hostname, argv[1]);		// Get hostname
 	
-									// Try to solve hostname
-									//   and check result
+									// Try to solve hostname, check result
 	if ((he = gethostbyname(hostname)) == NULL)
     {
         herror("gethostbyname");
